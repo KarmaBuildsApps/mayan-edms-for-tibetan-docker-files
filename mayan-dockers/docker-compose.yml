@@ -9,7 +9,7 @@ x-mayan-container:
     MAYAN_LOCK_MANAGER_BACKEND_ARGUMENTS: "{'redis_url':'redis://:${MAYAN_REDIS_PASSWORD:-mayanredispassword}@${MAYAN_DOCKER_REDIS_HOSTNAME:-redis}:${MAYAN_DOCKER_REDIS_PORT:-6379}/${MAYAN_REDIS_LOCK_MANAGER_DATABASE:-2}'}"
     # SEARCH_BACKEND_ARGUMENTS: '{"client_hosts": ["http://elastic:${MAYAN_ELASTICSEARCH_PASSWORD:-mayanespassword}@127.0.0.1:9200"]}'
     MAYAN_SEARCH_BACKEND_ARGUMENTS: '{"client_hosts": ["http://${MAYAN_ELASTICSEARCH_USER:-elastic}:${MAYAN_ELASTICSEARCH_PASSWORD:-mayanespassword}@elasticsearch:9200"]}'
-  image: ${MAYAN_DOCKER_IMAGE_NAME:-mayanedms/mayanedms-tibetan}:${MAYAN_DOCKER_IMAGE_TAG:-4.9.2}
+  image: ${MAYAN_DOCKER_IMAGE_NAME:-karmadocksthings/mayanedms-elasticsearch-with-tibetan-analyzer}:${MAYAN_DOCKER_IMAGE_TAG:-0.0.1}
   logging:
     driver: "json-file"
     options:
@@ -76,7 +76,7 @@ services:
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
       - ELASTICSEARCH_USERNAME=${MAYAN_ELASTICSEARCH_USER:-elastic}
       - ELASTIC_PASSWORD=${MAYAN_ELASTICSEARCH_PASSWORD:-mayanespassword}
-    image: ${MAYAN_DOCKER_ELASTICSEARCH_IMAGE:-elasticsearch-tibetan}:${MAYAN_DOCKER_ELASTICSEARCH_TAG:-7.17.26}
+    image: ${MAYAN_DOCKER_ELASTICSEARCH_IMAGE:-karmadocksthings/elasticsearch-icu-tibetan-analyzer-included}:${MAYAN_DOCKER_ELASTICSEARCH_TAG:-7.17.26}
     networks:
       - mayan
     # Enable to allow external access to the database.

@@ -35,7 +35,7 @@ x-mayan-frontend-ports:
   &mayan-frontend-ports
   # Disable ports if using Traefik. Set to an empty list `[]`.
   ports:
-    - "${MAYAN_FRONTEND_HTTP_PORT:-8008}"
+    - "${MAYAN_FRONTEND_HTTP_PORT:-8000}"
     # []
 
 x-mayan-traefik-labels:
@@ -57,6 +57,7 @@ x-mayan-traefik-labels:
 networks:
   mayan:
     driver: bridge
+    name: mayan-network
     # Change to true when using Traefik for increased security.
     internal: false
   traefik: {}
@@ -77,6 +78,7 @@ services:
     <<: [*mayan-container, *mayan-traefik-labels, *mayan-frontend-ports]
     profiles:
       - all_in_one
+    container_name: mayan-app
 
   elasticsearch:
     environment:
@@ -92,7 +94,7 @@ services:
       - mayan
     # Enable to allow external access to the database.
     ports:
-     - "9200:9200"
+     - 9200
     profiles:
       - elasticsearch
     restart: unless-stopped
@@ -115,7 +117,7 @@ services:
   #   volumes:
   #     - ./kibana.yml:/usr/share/kibana/config/kibana.yml
   #   ports:
-  #     - 5601:5601
+  #     - 5601
   #   profiles:
   #     - kibana
   #   restart: unless-stopped
@@ -148,7 +150,7 @@ services:
       - mayan
     # Enable to allow external access to the database.
     ports:
-     - "5432:5432"
+     - 5432
     profiles:
       - postgresql
     restart: unless-stopped
@@ -417,11 +419,11 @@ services:
       - mayan
       - traefik
     ports:
-      - "${MAYAN_RABBITMQ_ADMIN_HTTP_PORT:-15672}:15672"
-      - "${MAYAN_TRAEFIK_DASHBOARD_HTTP_PORT:-8080}:8080"
-      - "${MAYAN_TRAEFIK_KEYCLOAK_HTTP_PORT:-8081}:8081"
-      - "${MAYAN_TRAEFIK_HTTP_PORT:-80}:80"
-      - "${MAYAN_TRAEFIK_HTTPS_PORT:-443}:443"
+      - "${MAYAN_RABBITMQ_ADMIN_HTTP_PORT:-15672}"
+      - "${MAYAN_TRAEFIK_DASHBOARD_HTTP_PORT:-8080}"
+      - "${MAYAN_TRAEFIK_KEYCLOAK_HTTP_PORT:-8081}"
+      - "${MAYAN_TRAEFIK_HTTP_PORT:-80}"
+      - "${MAYAN_TRAEFIK_HTTPS_PORT:-443}"
     profiles:
       - traefik
     restart: unless-stopped

@@ -35,7 +35,7 @@ x-mayan-frontend-ports:
   &mayan-frontend-ports
   # Disable ports if using Traefik. Set to an empty list `[]`.
   ports:
-    - "${MAYAN_FRONTEND_HTTP_PORT:-80}:8000"
+    - "${MAYAN_FRONTEND_HTTP_PORT:-8008}"
     # []
 
 x-mayan-traefik-labels:
@@ -62,6 +62,17 @@ networks:
   traefik: {}
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: mayan-nginx-proxy
+    ports:
+      - "80:80" # Expose Nginx on port 80 to your host
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mount your Nginx config
+    networks:
+      - mayan # Use the same network as Mayan EDMS
+    depends_on:
+      - app # Ensure Mayan EDMS starts before Nginx
   app:
     <<: [*mayan-container, *mayan-traefik-labels, *mayan-frontend-ports]
     profiles:

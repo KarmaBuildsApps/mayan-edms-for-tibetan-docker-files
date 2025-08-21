@@ -1,0 +1,48 @@
+{
+    "index_patterns": [
+        "tibetan-*"
+    ],
+    "template": {
+        "settings": {
+            "analysis": {
+                "analyzer": {
+                    "default": {
+                        "type": "custom",
+                        "tokenizer": "icu_tokenizer",
+                        "filter": [
+                            "tibetan_normalizer",
+                            "icu_folding"
+                        ]
+                    },
+                    "default_search": {
+                        "type": "custom",
+                        "tokenizer": "icu_tokenizer",
+                        "filter": [
+                            "tibetan_normalizer",
+                            "icu_folding"
+                        ]
+                    }
+                },
+                "filter": {
+                    "tibetan_normalizer": {
+                        "type": "icu_normalizer",
+                        "name": "nfkc_cf",
+                        "mode": "compose"
+                    }
+                }
+            }
+        },
+        "mappings": {
+            "properties": {
+                "text": {
+                    "type": "text"
+                }
+            }
+        }
+    },
+    "priority": 20,
+    "version": 1,
+    "_meta": {
+        "description": "ICU-based analyzer optimized for Tibetan script search"
+    }
+}

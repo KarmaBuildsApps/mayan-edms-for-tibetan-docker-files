@@ -105,8 +105,8 @@ services:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - 5601:5601
-    # profiles:
-    #   - kibana
+    profiles:
+      - kibana
     restart: unless-stopped
 
   postgresql:
@@ -421,7 +421,6 @@ services:
 volumes:
   app:
   elasticsearch:
-  kibana:
   postgres:
   postgres-backups:
   postgres-initdb:

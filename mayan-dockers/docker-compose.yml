@@ -68,7 +68,7 @@ services:
     container_name: mayan-nginx-proxy
     ports:
       - "80:80" # Expose Nginx on port 80 to your host
-      - "8080:8080" # Expose Nginx on port 8080 for Traefik dashboard
+      # - "8080:8080" # Expose Nginx on port 8080 for Traefik dashboard
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mount your Nginx config
     networks:

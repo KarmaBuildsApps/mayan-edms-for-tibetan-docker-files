@@ -9,7 +9,8 @@ x-mayan-container:
     MAYAN_LOCK_MANAGER_BACKEND_ARGUMENTS: "{'redis_url':'redis://:${MAYAN_REDIS_PASSWORD:-mayanredispassword}@${MAYAN_DOCKER_REDIS_HOSTNAME:-redis}:${MAYAN_DOCKER_REDIS_PORT:-6379}/${MAYAN_REDIS_LOCK_MANAGER_DATABASE:-2}'}"
     # SEARCH_BACKEND_ARGUMENTS: '{"client_hosts": ["http://elastic:${MAYAN_ELASTICSEARCH_PASSWORD:-mayanespassword}@127.0.0.1:9200"]}'
     MAYAN_SEARCH_BACKEND_ARGUMENTS: '{"client_hosts": ["http://${MAYAN_ELASTICSEARCH_USER:-elastic}:${MAYAN_ELASTICSEARCH_PASSWORD:-mayanespassword}@elasticsearch:9200"]}'
-  image: ${MAYAN_DOCKER_IMAGE_NAME:-karmadocksthings/mayanedms-elasticsearch-with-tibetan-analyzer}:${MAYAN_DOCKER_IMAGE_TAG:-0.0.6}
+    MAYAN_WORKER_E_MAX_MEMORY_PER_CHILD: 1000000
+  image: ${MAYAN_DOCKER_IMAGE_NAME:-karmadocksthings/mayanedms-elasticsearch-with-tibetan-analyzer}:${MAYAN_DOCKER_IMAGE_TAG:-0.0.7}
   logging:
     driver: "json-file"
     options:
@@ -87,7 +88,7 @@ services:
       - discovery.type=single-node
       - http.max_content_length=400mb
       - xpack.security.enabled=true
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms4g -Xmx8g"
       - ELASTICSEARCH_USERNAME=${MAYAN_ELASTICSEARCH_USER:-elastic}
       - ELASTIC_PASSWORD=${MAYAN_ELASTICSEARCH_PASSWORD:-mayanespassword}
     image: ${MAYAN_DOCKER_ELASTICSEARCH_IMAGE:-elasticsearch}:${MAYAN_DOCKER_ELASTICSEARCH_TAG:-9.1.2}
@@ -95,7 +96,7 @@ services:
       - mayan
     # Enable to allow external access to the database.
     ports:
-     - 9200
+     - 9200:9200
     profiles:
       - elasticsearch
     restart: unless-stopped

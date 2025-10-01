@@ -48,7 +48,7 @@ To restrict access to the internal network, we use nginx. For the server to be a
 - Open nginx.conf and set the server’s IP address next to server\_name in the config file.
 
 ## Run Docker Compose
-### `    `Build and start the containers with:
+### Build and start the containers with:
 
 Command:
 ```sh
